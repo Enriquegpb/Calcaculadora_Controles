@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -25,43 +26,50 @@ public Button btnr;
         EditText edt1=(EditText) findViewById(R.id.op1);
         EditText edt2=(EditText) findViewById(R.id.op2);
         TextView tvr=(TextView) findViewById(R.id.tvr);
+
         Spinner sp=(Spinner) findViewById(R.id.sp);
 
+        btnr=(Button) findViewById(R.id.br);
+
+        sp.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item,operadores));
         sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String tsp=sp.getSelectedItem().toString();
-                operacion=tsp;
+                operacion= sp.getSelectedItem().toString();
 
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                tvr.setText("No hay seleccion");
             }
         });
         btnr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tvr.setText(calcular_resultado(op1,operacion,op2));
+                int numero;
+                numero=(calcular_resultado(Integer.parseInt((String) edt1.getText().toString()),operacion,Integer.parseInt((String) edt2.getText().toString())));
+               tvr.setText(String.valueOf(numero));
             }
         });
-
     }
     public int calcular_resultado(int op1,String operacion,int op2){
+        int resultado=0;
         switch (operacion){
             case "+":
-                return op1+op2;
+                resultado= op1+op2;
                 break;
             case "-":
-                return op1-op2;
+                resultado= op1-op2;
                 break;
             case "*":
-                return op1*op2;
+                resultado= op1*op2;
                 break;
             case "/":
-                return op1/op2;
+                resultado= op1/op2;
                 break;
         }
+        return resultado;
     }
 }
